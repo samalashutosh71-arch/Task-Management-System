@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User 
 {
 	@Id
@@ -35,6 +37,7 @@ public class User
     private String name;
 	 @NotBlank(message = "Email is required")
 	 @Email(message = "Invalid email format")
+
     private String email;
 
 	@NotBlank(message = "Role is required")

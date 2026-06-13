@@ -40,7 +40,7 @@ public class UserController
 	        @RequestBody User user,
 	        Authentication auth) {
 
-	    User saved = userServ.createUser(user, auth);
+	   User saved = userServ.createUser(user, auth);
 
 	    return new ResponseEntity<>(saved, HttpStatus.CREATED);
 	}

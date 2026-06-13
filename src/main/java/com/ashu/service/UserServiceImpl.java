@@ -39,8 +39,11 @@ public class UserServiceImpl implements UserService
 
 	    //set the manager to user
 	    user.setManager(manager);
+	    
+	    
 
-	    // existing logic
+
+	    // set task
 	    if (user.getTasks() != null) {
 	        user.getTasks().forEach(task -> {
 	            task.setUser(user);
@@ -49,9 +52,10 @@ public class UserServiceImpl implements UserService
 	    String rawPassword = user.getName().substring(0,4) + "@123";
 	    user.setPassword(rawPassword);
 	    //  user.setPassword(passwordEncoder.encode(rawPassword));
-
-
+	   
 	    return userRepo.save(user);
+	   
+
 	}
 
 	@Override

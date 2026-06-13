@@ -15,6 +15,13 @@ import com.ashu.entity.User;
 
 public interface UserRepositary extends JpaRepository<User, Long> 
 {
+	/*@Modifying
+	@Query("UPDATE Task t SET t.status='COMPLETED' WHERE t.id=:id")
+	int updateTaskStatus(Long id);
+	@Modifying
+	@Query("DELETE FROM Task t WHERE t.id=:id")
+	int deleteTask(Long id);*/
+
 	 Optional<User> findByEmail(String email);
 	 List<User> findByManagerId(Long managerId);
 	 //find by name only specific manager users
