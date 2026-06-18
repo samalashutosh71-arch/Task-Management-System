@@ -27,9 +27,10 @@ public class TaskServiceImpl implements TaskService
 	private UserRepositary userRepo;
 
 	@Override
-	public Task createTask(Task task) {
+	public String createTask(Task task)
+	{
 		Task save=taskRepo.save(task);
-		return save;
+		return "Task Is created";
 	}
 
 	@Override
@@ -138,7 +139,7 @@ public class TaskServiceImpl implements TaskService
 
 	    return taskRepo.save(task);
 	}
-	//get user by id
+	//get task by userid
 	@Override
 	public List<Task> getTaskByUserId(long userid)
 	{
@@ -146,6 +147,32 @@ public class TaskServiceImpl implements TaskService
 		List<Task>tasksOfUser=user.getTasks();
 		
 		return tasksOfUser;
+	}
+	
+	//for assign to a new user from existing user 
+	@Override
+	public Task changeUser(long taskId, long userId) {
+
+	    Task task = taskRepo.findById(taskId)
+	            .orElseThrow(() ->
+	                    new ResourceNotFoundException(
+	                            "Task not found with id: " + taskId));
+
+	    User user = userRepo.findById(userId)
+	            .orElseThrow(() ->
+	                    new ResourceNotFoundException(
+	                            "User not found with id: " + userId));
+
+	    // Cannot transfer completed tasks
+	    if ("COMPLETED".equals(task.getStatus())) {
+	        throw new ResponseStatusException(
+	                HttpStatus.BAD_REQUEST,
+	                "Cannot change user for a completed task");
+	    }
+
+	    task.setUser(user);
+
+	    return taskRepo.save(task);
 	}
 	
 	//all task pagination

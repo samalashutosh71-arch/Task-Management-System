@@ -10,7 +10,7 @@ import com.ashu.entity.User;
 
 public interface UserService 
 {
-	public User createUser(User user,Authentication auth);
+	public String createUser(User user,Authentication auth);
 
 	public List<User> getAllUser();
 	

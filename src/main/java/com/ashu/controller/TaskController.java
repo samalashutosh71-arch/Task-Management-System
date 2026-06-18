@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ashu.entity.Task;
 import com.ashu.service.TaskService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/tasks")
@@ -30,10 +32,10 @@ public class TaskController
 	
 	//if inside controller you have to use anything inside method param when you have to read anything from url path or web
 	@PostMapping("/createTask")
-	public ResponseEntity<Task>createTask(@RequestBody Task task)
+	public ResponseEntity<String>createTask(@Valid @RequestBody Task task)
 	{
-		Task save=taskServ.createTask(task);
-		return new ResponseEntity<Task>(save,HttpStatus.OK);	
+		String saveMsg=taskServ.createTask(task);
+		return new ResponseEntity<String>(saveMsg,HttpStatus.OK);	
 		
 	}
 	@GetMapping("/getAllTask")
@@ -83,6 +85,17 @@ public class TaskController
 
 	    Task task = taskServ.assignTask(taskId, userId,updatedTask);
 	    return ResponseEntity.ok(task);
+	}
+	
+	//for chnage task owner
+	@PutMapping("/changeUser/{taskId}/{userId}")
+	public ResponseEntity<Task> changeUser(
+	        @PathVariable long taskId,
+	        @PathVariable long userId) {
+
+	    Task task = taskServ.changeUser(taskId, userId);
+
+	    return new ResponseEntity<>(task, HttpStatus.OK);
 	}
 	
 	//get task by userid

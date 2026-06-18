@@ -8,7 +8,7 @@ import com.ashu.entity.Task;
 
 public interface TaskService 
 {
-	public Task createTask(Task task);
+	public String createTask(Task task);
 	public List<Task>getAlltask();
 	
 	public Task getTaskById(long id);
@@ -20,6 +20,7 @@ public interface TaskService
 	public List<Task>findByTaskStatus(String status);
 	
 	public Task assignTask(long taskId,long userId,Task updatedTask);
+	public Task changeUser(long taskId, long userId);
 	
 	public List<Task> getTaskByUserId(long userid);
 	

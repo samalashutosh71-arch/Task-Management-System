@@ -30,7 +30,7 @@ import lombok.Setter;
 public class User 
 {
 	@Id
-	@SequenceGenerator(name = "seq1",sequenceName = "TaskApp_User_seq",allocationSize = 1,initialValue = 100)
+	@SequenceGenerator(name = "seq1",sequenceName = "TaskApp_User_seq",allocationSize = 1,initialValue = 118)
 	@GeneratedValue(generator = "seq1",strategy = GenerationType.SEQUENCE)
     private Long id;
 	 @NotBlank(message = "Name cannot be empty")

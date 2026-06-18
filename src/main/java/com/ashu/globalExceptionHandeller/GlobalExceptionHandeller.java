@@ -19,6 +19,11 @@ public class GlobalExceptionHandeller
 
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+	//validation of service class
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<String> handleIllegalState(IllegalStateException ex) {
+	    return ResponseEntity.badRequest().body(ex.getMessage());
+	}
 	
 	//for handle validation
 	@ExceptionHandler(MethodArgumentNotValidException.class)

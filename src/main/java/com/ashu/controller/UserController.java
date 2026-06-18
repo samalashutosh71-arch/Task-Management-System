@@ -36,13 +36,13 @@ public class UserController
 	
 
 	@PostMapping("/createUser")
-	public ResponseEntity<User> createUser(
-	        @RequestBody User user,
+	public ResponseEntity<String> createUser(
+	      @Valid  @RequestBody User user,
 	        Authentication auth) {
 
-	   User saved = userServ.createUser(user, auth);
+	   String savedMsg = userServ.createUser(user, auth);
 
-	    return new ResponseEntity<>(saved, HttpStatus.CREATED);
+	    return new ResponseEntity<>(savedMsg, HttpStatus.CREATED);
 	}
 	//all user
 	@GetMapping("getAllUser")
@@ -64,8 +64,9 @@ public class UserController
 	}
 	
 	@PutMapping("update/{id}")
-	public ResponseEntity<String>updateUserById(@PathVariable int id ,@RequestBody User updatedUser)
+	public ResponseEntity<String>updateUserById(@PathVariable int id ,@Valid @RequestBody User updatedUser)
 	{
+		
 		String msg=userServ.updateUser(id, updatedUser);
 		return new ResponseEntity<String>(msg,HttpStatus.OK);
 			

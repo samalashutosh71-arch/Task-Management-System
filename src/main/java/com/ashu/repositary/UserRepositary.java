@@ -31,4 +31,5 @@ public interface UserRepositary extends JpaRepository<User, Long>
 	 
 	 Page<User>findByManagerId(Long managerId,Pageable pageable);
 
+	 boolean existsByEmail(String email);
 }

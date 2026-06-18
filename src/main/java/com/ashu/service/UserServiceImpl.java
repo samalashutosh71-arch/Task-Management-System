@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService
 
 	
 	@Override
-	public User createUser(User user, Authentication auth) {
+	public String createUser(User user, Authentication auth) {
 
 	    Long managerId = Long.parseLong(auth.getName());  //auth class method 
 	 
@@ -39,8 +39,11 @@ public class UserServiceImpl implements UserService
 
 	    //set the manager to user
 	    user.setManager(manager);
+	    //email unique
 	    
-	    
+	    if(userRepo.existsByEmail(user.getEmail())) {
+	        throw new IllegalStateException("Email already exists");
+	    }
 
 
 	    // set task
@@ -52,8 +55,9 @@ public class UserServiceImpl implements UserService
 	    String rawPassword = user.getName().substring(0,4) + "@123";
 	    user.setPassword(rawPassword);
 	    //  user.setPassword(passwordEncoder.encode(rawPassword));
-	   
-	    return userRepo.save(user);
+	    userRepo.save(user);
+	    
+	    return "User Created Successfully";
 	   
 
 	}
@@ -76,6 +80,12 @@ public class UserServiceImpl implements UserService
 	@Override
 	public String updateUser(long id, User updatedUser) {
 		User user=userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found with id: " + id));
+		   if(user.getName().equals(updatedUser.getName())
+		            && user.getEmail().equals(updatedUser.getEmail())
+		            && user.getRole().equals(updatedUser.getRole())) {
+
+		        throw new IllegalStateException("No changes detected");
+		    }
 		user.setName(updatedUser.getName());
 	    user.setEmail(updatedUser.getEmail());
 	    user.setRole(updatedUser.getRole());
@@ -86,9 +96,22 @@ public class UserServiceImpl implements UserService
 	//delete
 	@Override
 	public String deleteUser(long id) {
-		User user=userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found with id: " + id));
-		userRepo.deleteById(id);
-		return "user deleted with Task for userid :"+user.getId();
+
+	    User user = userRepo.findById(id)
+	            .orElseThrow(() ->
+	                new ResourceNotFoundException("User not found with id: " + id));
+
+	    boolean hasActiveTasks = user.getTasks().stream()
+	            .anyMatch(task -> !"COMPLETED".equals(task.getStatus()));
+
+	    if (hasActiveTasks) {
+	        throw new IllegalStateException(
+	            "Cannot delete user. Please reassign all assigned tasks to another user first.");
+	    }
+
+	    userRepo.deleteById(id);
+
+	    return "User deleted successfully.";
 	}
 	
 	//pagination user

@@ -39,7 +39,7 @@ public class SecurityConfig {
             	    .requestMatchers("/api/tasks/update/**").hasAnyRole("USER","MANAGER")
             	    .requestMatchers("/api/saves/change-password").hasRole("USER")
 
-            	    // ADMIN  full access to tasks + users
+            	    // MANAGER full access to tasks + users
             	    .requestMatchers("/api/tasks/**").hasRole("MANAGER")
             	    .requestMatchers("/api/saves/**").hasRole("MANAGER")
             	    .requestMatchers("/api/saves/manager/**").hasRole("MANAGER")
